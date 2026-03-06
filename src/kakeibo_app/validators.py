@@ -1,5 +1,6 @@
 """バリデータ層 - 入力検証・型変換"""
 
+import re
 from decimal import Decimal, InvalidOperation
 from datetime import date
 
@@ -60,21 +61,16 @@ def parse_date(text: str) -> date:
         raise ValueError("empty")
     
     # フォーマットチェック
-    parts = text.split("/")
-    if len(parts) != 3:
+    if not re.fullmatch(r"^\d{4}/\d{2}/\d{2}$", text):
         raise ValueError("format_error")
-    for part in parts:
-        if not part.isdigit():
-            raise ValueError("format_error")
     
     # 有効日付チェック
+    parts = text.split("/")
+    year_s, month_s, day_s = parts
     try:
-        return date.fromisoformat(text.replace("/", "-"))
+        return date(int(year_s), int(month_s), int(day_s))
     except ValueError as e:
-        if "month must be in" in str(e) or "day is out of range" in str(e):
-            raise ValueError("invalid_date")
-        else:
-            raise ValueError("format_error")
+        raise ValueError("invalid_date") from e
 
 
 def validate_transaction_type(text: str, transaction_types) -> str:
