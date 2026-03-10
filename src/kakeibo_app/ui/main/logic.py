@@ -11,7 +11,13 @@ from ...validators import build_transaction_from_form, build_transaction_from_ro
 
 
 def on_sort_column(app, col: str) -> None:
-    """列ヘッダーをクリックしてソート"""
+    """列ヘッダーをクリックしてソート
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+        col (str): クリックされた列名
+    """
+    # クリックされた列が現在のソート列と同じならソート方向を反転、違うなら新しい列で昇順にソート
     if app.sort_column == col:
         app.sort_reverse = not app.sort_reverse
     else:
@@ -22,7 +28,11 @@ def on_sort_column(app, col: str) -> None:
 
 
 def apply_sort(app) -> None:
-    """現在のソート設定を適用"""
+    """現在のソート設定を適用
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     if not app.sort_column:
         return
 
@@ -50,7 +60,11 @@ def apply_sort(app) -> None:
 
 
 def on_type_changed(app) -> None:
-    """支出/収入が変更された時にカテゴリを更新"""
+    """支出/収入が変更された時にカテゴリを更新
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     transaction_type = app.type_var.get()
     if transaction_type == "支出":
         categories = EXPENSE_CATEGORIES
@@ -68,6 +82,9 @@ def on_add_or_update(app) -> None:
 
     バリデーション実行 → Transaction オブジェクト生成 →
     TransactionManager に登録 → Treeview 更新 → 合計再計算
+
+    Args:
+        app: KakeiboApp ビューインスタンス
     """
     try:
         transaction = build_transaction_from_form(
@@ -135,11 +152,16 @@ def on_add_or_update(app) -> None:
         app.tree.selection_set(added_iid)
         app.tree.see(added_iid)
 
+    # 入力フォームをリセット
     on_clear_inputs(app)
 
 
 def on_clear_inputs(app) -> None:
-    """入力フォームをリセット"""
+    """入力フォームをリセット
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     app.price_var.set("")
     app.type_var.set(TRANSACTION_TYPES[0])
     on_type_changed(app)
@@ -149,7 +171,12 @@ def on_clear_inputs(app) -> None:
 
 
 def on_tree_double_click(app, event) -> None:
-    """行をダブルクリックして編集モードに遷移"""
+    """行をダブルクリックして編集モードに遷移
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+        event: Tkinter のダブルクリックイベント
+    """
     iid = app.tree.focus()
     if not iid:
         return
@@ -170,13 +197,21 @@ def on_tree_double_click(app, event) -> None:
 
 
 def exit_edit_mode(app) -> None:
-    """編集モードを終了"""
+    """編集モードを終了
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     app.editing_iid = None
     app.add_update_btn.configure(text="追加")
 
 
 def on_delete_selected(app) -> None:
-    """選択行を削除"""
+    """選択行を削除
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     selection = app.tree.selection()
     if not selection:
         messagebox.showinfo("削除", "削除する行を選択してください。")
@@ -198,14 +233,22 @@ def on_delete_selected(app) -> None:
 
 
 def update_total(app) -> None:
-    """合計金額を再計算（TransactionManager を使用）"""
+    """合計金額を再計算（TransactionManager を使用）
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     expense, income, net = app.manager.calculate_totals()
     app.total_var.set(format_yen(net))
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
 
 
 def on_show_summary(app) -> None:
-    """統計画面（Summary）を開く"""
+    """統計画面（Summary）を開く
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     if not app.manager.get_all_items():
         messagebox.showinfo("詳細", "表示するデータがありません。")
         return
@@ -224,7 +267,11 @@ def on_show_summary(app) -> None:
 
 
 def on_export_csv(app) -> None:
-    """現在のデータを CSV ファイルに保存"""
+    """現在のデータを CSV ファイルに保存
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     if not app.manager.get_all_items():
         messagebox.showinfo("保存", "保存するデータがありません。")
         return
@@ -245,7 +292,11 @@ def on_export_csv(app) -> None:
 
 
 def on_import_csv(app) -> None:
-    """CSV ファイルからデータを読み込み"""
+    """CSV ファイルからデータを読み込み
+
+    Args:
+        app: KakeiboApp ビューインスタンス
+    """
     path = filedialog.askopenfilename(
         title="一括取込",
         filetypes=[("データファイル", "*.csv"), ("すべてのファイル", "*.*")],

@@ -27,6 +27,12 @@ def parse_decimal(text: str) -> Decimal:
 
 def parse_price(text: str) -> Decimal:
     """金額文字列を検証して Decimal に変換
+
+    Args:
+        text (str): 金額文字列（「¥1,234」や「1234」形式対応）
+
+    Returns:
+        Decimal: 検証済みの金額
     
     Raises:
         ValueError("invalid_price"): 数値として解釈できない
@@ -75,6 +81,13 @@ def parse_date(text: str) -> date:
 
 def validate_transaction_type(text: str, transaction_types) -> str:
     """取引種別の検証
+
+    Args:
+        text (str): 入力された取引種別
+        transaction_types: 許可する取引種別一覧
+
+    Returns:
+        str: 検証済みの取引種別
     
     Raises:
         ValueError("invalid_type"): 想定外の種別
@@ -91,7 +104,17 @@ def normalize_category(
     expense_categories,
     income_categories,
 ) -> str:
-    """カテゴリを正規化（空・不正は既定値に寄せる）"""
+    """カテゴリを正規化（空・不正は既定値に寄せる）
+
+    Args:
+        category (str): 入力カテゴリ
+        transaction_type (str): 取引種別（支出/収入）
+        expense_categories: 支出カテゴリ一覧
+        income_categories: 収入カテゴリ一覧
+
+    Returns:
+        str: 正規化後カテゴリ
+    """
     categories = expense_categories if transaction_type == "支出" else income_categories
     normalized = category.strip() if category else ""
     if not normalized or normalized not in categories:
@@ -109,16 +132,38 @@ def build_transaction_from_form(
     income_categories,
     transaction_types,
 ) -> Transaction:
-    """フォーム入力から Transaction を生成"""
+    """フォーム入力から Transaction を生成
+
+    Args:
+        date_str (str): 日付文字列（YYYY/MM/DD）
+        transaction_type (str): 取引種別（支出/収入）
+        category (str): 入力カテゴリ
+        price_str (str): 金額文字列
+        memo (str): メモ文字列
+        expense_categories: 支出カテゴリ一覧
+        income_categories: 収入カテゴリ一覧
+        transaction_types: 許可する取引種別一覧
+
+    Returns:
+        Transaction: 検証済み取引オブジェクト
+
+    Raises:
+        ValueError: 各検証で不正入力の場合
+    """
+    # 日付の検証と変換
     parse_date(date_str)
+    # 取引種別の検証
     validated_type = validate_transaction_type(transaction_type, transaction_types)
+    # 金額の検証と変換
     price = parse_price(price_str)
+    # 種別に応じてカテゴリを正規化
     normalized_category = normalize_category(
         category,
         validated_type,
         expense_categories,
         income_categories,
     )
+    # メモは前後空白を除去して保持
     return Transaction(date_str, validated_type, normalized_category, price, memo.strip())
 
 
@@ -128,19 +173,34 @@ def build_transaction_from_row(
     income_categories,
     transaction_types,
 ) -> Transaction:
-    """CSV 行から Transaction を生成"""
+    """CSV 行から Transaction を生成
+
+    Args:
+        row: CSV の1行データ
+        expense_categories: 支出カテゴリ一覧
+        income_categories: 収入カテゴリ一覧
+        transaction_types: 許可する取引種別一覧
+
+    Returns:
+        Transaction: 検証済み取引オブジェクト
+
+    Raises:
+        ValueError("insufficient_columns"): 必須列が不足している
+        ValueError: フォーム変換時の検証エラー
+    """
     if len(row) < 4:
         raise ValueError("insufficient_columns")
 
+    # 行データをフォーム入力と同様に処理
     date_str, transaction_type, category, price_s = row[:4]
     memo = row[4] if len(row) > 4 else ""
 
     return build_transaction_from_form(
         date_str.strip(),
-        transaction_type,
-        category,
-        price_s,
-        memo,
+        transaction_type.strip(),
+        category.strip(),
+        price_s.strip(),
+        memo.strip(),
         expense_categories,
         income_categories,
         transaction_types,

@@ -37,8 +37,10 @@ class KakeiboApp(tk.Tk):
     FORM_PADX = 12
     FORM_PADY_TOP = (12, 6)
     FORM_PADY_NEXT = 8
-    LABEL_PADX = (0, 6)
-    BUTTON_PADX = 6
+    INNER_PADX = 6
+    LABEL_PADX = (20, 6)
+    BUTTON_PADX = 3
+    BUTTON_PADY = 3
 
     def __init__(self):
         """アプリケーション初期化
@@ -47,8 +49,7 @@ class KakeiboApp(tk.Tk):
         """
         super().__init__()
         self.title("家計簿")
-        self.geometry("820x560")
-        self.minsize(760, 520)
+        self.geometry("900x600")
 
         # データ管理（UI と分離）
         self.manager = TransactionManager()
@@ -58,6 +59,7 @@ class KakeiboApp(tk.Tk):
         self.sort_column = "date"  # ソート中の列
         self.sort_reverse = False  # ソート方向（False=昇順、True=降順）
 
+        # UI 構築
         self._build_ui()
         self.update_idletasks()
         self.minsize(self.winfo_reqwidth(), self.winfo_reqheight())
@@ -74,14 +76,12 @@ class KakeiboApp(tk.Tk):
         form.pack(fill="x", padx=self.FORM_PADX, pady=self.FORM_PADY_TOP)
 
         # グリッド列の設定
-        form.columnconfigure(1, weight=0)
-        form.columnconfigure(3, weight=0)
         form.columnconfigure(4, weight=1)
 
         # Row 0: 支出/収入
         self.type_var = tk.StringVar(value=TRANSACTION_TYPES[0])
         radio_frame = ttk.Frame(form)
-        radio_frame.grid(row=0, column=0, columnspan=2, sticky="w", padx=6, pady=self.FORM_PADY_NEXT)
+        radio_frame.grid(row=0, column=0, columnspan=2, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
         for t_type in TRANSACTION_TYPES:
             tk.Radiobutton(
                 radio_frame,
@@ -92,12 +92,12 @@ class KakeiboApp(tk.Tk):
             ).pack(side="left", padx=3)
 
         # Row 0: 日付
-        ttk.Label(form, text="日付").grid(row=0, column=2, sticky="e", padx=(20, 6), pady=self.FORM_PADY_NEXT)
+        ttk.Label(form, text="日付").grid(row=0, column=2, sticky="e", padx=self.LABEL_PADX, pady=self.FORM_PADY_NEXT)
         self.date_var = tk.StringVar(value=date.today().strftime("%Y/%m/%d"))
-        ttk.Entry(form, textvariable=self.date_var, width=15).grid(row=0, column=3, sticky="w", padx=6, pady=self.FORM_PADY_NEXT)
+        ttk.Entry(form, textvariable=self.date_var, width=15).grid(row=0, column=3, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
 
         # Row 1: カテゴリ
-        ttk.Label(form, text="カテゴリ").grid(row=1, column=0, sticky="e", padx=6, pady=self.FORM_PADY_NEXT)
+        ttk.Label(form, text="カテゴリ").grid(row=1, column=0, sticky="e", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
         self.category_var = tk.StringVar(value=EXPENSE_CATEGORIES[0])
         self.category_combo = ttk.Combobox(
             form,
@@ -106,26 +106,26 @@ class KakeiboApp(tk.Tk):
             width=18,
             state="readonly",
         )
-        self.category_combo.grid(row=1, column=1, sticky="w", padx=6, pady=self.FORM_PADY_NEXT)
+        self.category_combo.grid(row=1, column=1, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
 
         # Row 1: 金額
-        ttk.Label(form, text="金額").grid(row=1, column=2, sticky="e", padx=(20, 6), pady=self.FORM_PADY_NEXT)
+        ttk.Label(form, text="金額").grid(row=1, column=2, sticky="e", padx=self.LABEL_PADX, pady=self.FORM_PADY_NEXT)
         self.price_var = tk.StringVar()
-        ttk.Entry(form, textvariable=self.price_var, width=15).grid(row=1, column=3, sticky="w", padx=6, pady=self.FORM_PADY_NEXT)
+        ttk.Entry(form, textvariable=self.price_var, width=15).grid(row=1, column=3, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
 
         # Row 2: メモ
-        ttk.Label(form, text="メモ").grid(row=2, column=0, sticky="ne", padx=6, pady=(8, 8))
+        ttk.Label(form, text="メモ").grid(row=2, column=0, sticky="ne", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
         memo_entry = tk.Text(form, width=60, height=3)
-        memo_entry.grid(row=2, column=1, columnspan=3, sticky="ew", padx=6, pady=8)
+        memo_entry.grid(row=2, column=1, columnspan=3, sticky="ew", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
         self.memo_entry = memo_entry
 
         # ボタン群（追加／更新、クリア）
         button_frame = ttk.Frame(form)
-        button_frame.grid(row=2, column=4, sticky="sw", padx=6, pady=8)
+        button_frame.grid(row=2, column=4, sticky="sw", padx=self.INNER_PADX, pady=self.FORM_PADY_NEXT)
 
         self.add_update_btn = ttk.Button(button_frame, text="追加", command=self.on_add_or_update)
-        self.add_update_btn.pack(side="left", padx=3, pady=3)
-        ttk.Button(button_frame, text="クリア", command=self.on_clear_inputs).pack(side="left", padx=3, pady=3)
+        self.add_update_btn.pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
+        ttk.Button(button_frame, text="クリア", command=self.on_clear_inputs).pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
 
         # 一覧（Treeview）
         list_frame = ttk.Frame(self)
@@ -190,11 +190,16 @@ class KakeiboApp(tk.Tk):
 
     # ==== ヘルパー関数 ====
     def _get_heading_text(self, col: str) -> str:
-        """列ヘッダーのテキストを取得（ソート状態を含む）"""
+        """列ヘッダーのテキストを取得（ソート状態を含む）
+
+        Args:
+            col (str): 対象列名
+        """
         text_map = {
             "date": "日付", "type": "種類", "category": "カテゴリ", "price": "金額", "memo": "メモ"
         }
         text = text_map.get(col, col)
+        # ソート中の列にはソート方向を示す矢印を追加
         if self.sort_column == col:
             indicator = "▼" if self.sort_reverse else "▲"
             text = f"{text} {indicator}"
@@ -204,7 +209,11 @@ class KakeiboApp(tk.Tk):
 
     # ==== イベントハンドラ ====
     def on_sort_column(self, col: str):
-        """列ヘッダーをクリックしてソート"""
+        """列ヘッダーをクリックしてソート
+
+        Args:
+            col (str): クリックされた列名
+        """
         on_sort_column(self, col)
 
     def _apply_sort(self):
@@ -224,7 +233,11 @@ class KakeiboApp(tk.Tk):
         on_clear_inputs(self)
 
     def on_tree_double_click(self, event):
-        """行をダブルクリックして編集モードに遷移"""
+        """行をダブルクリックして編集モードに遷移
+
+        Args:
+            event: Tkinter のダブルクリックイベント
+        """
         on_tree_double_click(self, event)
 
     def _exit_edit_mode(self):

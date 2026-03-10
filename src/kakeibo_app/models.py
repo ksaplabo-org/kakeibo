@@ -136,7 +136,9 @@ class TransactionManager:
         try:
             with open(path, "w", newline="", encoding="utf-8") as f:
                 writer = csv.writer(f)
+                # ヘッダーを書き込む
                 writer.writerow(["日付", "種類", "カテゴリ", "金額", "メモ"])
+                # データを書き込む
                 for item in self.items.values():
                     writer.writerow([
                         item["date"], 
@@ -175,7 +177,7 @@ class TransactionManager:
             start_idx = 0
             if rows and rows[0][:4] == ["日付", "種類", "カテゴリ", "金額"]:
                 start_idx = 1
-            
+            # データ行をバリデーションしてトランザクションを生成
             for row in rows[start_idx:]:
                 try:
                     transaction = validators(row)

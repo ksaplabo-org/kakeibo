@@ -67,6 +67,12 @@ Python + Tkinterで作成したシンプルな家計簿管理アプリケーシ�
 
 ### 1. Pythonのインストール
 
+https://www.python.org/downloads/windows/
+
+![alt text](assets/python_install.png)
+※詳細の手順は別途準備
+
+
 Python 3.7以上がインストールされているか確認してください。
 
 ```powershell
@@ -92,7 +98,7 @@ pip install pandas matplotlib
 ### Windows (PowerShell)
 
 ```powershell
-cd c:\work\kakeibo\src
+cd c:\[任意のフォルダ]\kakeibo\src
 py -m kakeibo_app
 ```
 
@@ -100,9 +106,7 @@ py -m kakeibo_app
 
 正常に起動すると、以下のようなウィンドウが表示されます：
 
-- タイトル: 「家計簿」
-- ウィンドウサイズ: 820x560
-
+![alt text](assets/kakeibo_top.png)
 ---
 
 ## 使い方
@@ -179,7 +183,7 @@ py -m kakeibo_app
 
 - 日付: YYYY/MM/DD形式
 - 種類: 「支出」または「収入」
-- カテゴリ: 種類に対応したカテゴリリストに存在
+- カテゴリ: 空または不正値は既定カテゴリへ自動補正
 - 金額: 1以上の数値
 
 ### 7. 統計表示
@@ -217,7 +221,7 @@ src/kakeibo_app/                # メインパッケージ
     └── summary/                 # 統計表示画面
         ├── __init__.py
         ├── view.py              # GUI構築（Toplevel, Notebook, Canvas）
-        └── logic.py             # データ集計・グラフ描画
+        └── logic.py             # データ集計・テーブルイベント連携
 
 README.md                        # このファイル
 ```
@@ -293,9 +297,11 @@ README.md                        # このファイル
 **主要関数:**
 - `parse_date(text: str) -> date` - 日付文字列を検証・変換（YYYY/MM/DD形式）
 - `parse_decimal(text: str) -> Decimal` - 金額文字列を変換（「¥1,234」形式対応）
-- `validate_date_input(text)` - 入力が空でないか確認
-- `validate_date_format(text)` - YYYY/MM/DD形式の確認
-- `validate_date_value(text)` - 存在する有効な日付の確認
+- `parse_price(text: str) -> Decimal` - 金額文字列を検証して変換（1未満をエラー）
+- `validate_transaction_type(text, transaction_types) -> str` - 種別検証
+- `normalize_category(...) -> str` - カテゴリ正規化（空・不正は既定値）
+- `build_transaction_from_form(...) -> Transaction` - フォーム入力を一括検証してモデル生成
+- `build_transaction_from_row(...) -> Transaction` - CSV行を検証してモデル生成
 
 **使用箇所:** UI層でのフォーム検証に使用
 
@@ -303,7 +309,7 @@ README.md                        # このファイル
 
 **利点:**
 - UI ロジックと独立 → テストが容易
-- エラーメッセージが明確（empty、format_error、invalid_date）
+- エラーメッセージが明確（empty、format_error、invalid_date、invalid_price、negative_price など）
 - 他のプログラムでも再利用可能
 
 ---
@@ -322,8 +328,6 @@ class Transaction:
     """個別の取引データを表すモデル"""
     def __init__(self, date, transaction_type, category, price, memo="")
     def to_dict() -> dict       # 辞書に変換
-    @staticmethod
-    def from_dict(data) -> Transaction  # 辞書から構築
 ```
 
 **属性:**
@@ -337,17 +341,17 @@ class Transaction:
 ```python
 class TransactionManager:
     """トランザクション群の管理・永続化"""
-    def add_item(iid, transaction)           # 追加
-    def update_item(iid, transaction)        # 更新
-    def delete_item(iid)                     # 削除
-    def get_item(iid) -> dict                # 1件取得
+    def add_transaction(iid, transaction)           # 追加
+    def update_transaction(iid, transaction)        # 更新
+    def delete_transaction(iid)                     # 削除
+    def get_transaction(iid) -> dict                # 1件取得
     def get_all_items() -> Dict              # 全件取得
     def calculate_totals() -> tuple          # 合計計算（支出,収入,ネット）
     def export_csv(path) -> int              # CSV保存
     def import_csv(path, validators) -> tuple # CSV読込
 ```
 
-**使用箇所:** UI層（`ui/main/logic.py`、`ui/summary/logic.py`）でデータ操作時に使用
+**使用箇所:** 主に UI 層 `ui/main/logic.py` でデータ操作時に使用（summary は集計表示で参照）
 
 **依存関係:** `csv`、`decimal`、`datetime`、`pathlib` 標準ライブラリのみ
 
@@ -376,11 +380,11 @@ class TransactionManager:
   - `_build_ui()` - GUI 構築（入力フォーム、Treeview、ボタン、合計表示）
   - `_get_heading_text(col)` - ソート状態に応じた列ヘッダーテキスト生成
 - イベント委譲メソッド（実装は logic.py に委譲）
-  - `on_sort_column(col)`, `on_type_changed()`
+  - `on_sort_column(col)`, `_on_type_changed()`
   - `on_add_or_update()`, `on_clear_inputs()`, `on_delete_selected()`
   - `on_export_csv()`, `on_import_csv()`, `on_show_summary()`
   - `on_tree_double_click(event)` - Treeview ダブルクリック時の編集開始
-  - `exit_edit_mode()` - 編集モード終了
+  - `_exit_edit_mode()` - 編集モード終了
 
 **依存関係:** `logic` モジュールからイベントハンドラーをインポート
 
@@ -408,7 +412,7 @@ class TransactionManager:
 **依存関係:**
 - `constants` - カテゴリ・取引種別
 - `formatters` - `format_yen()`
-- `validators` - `parse_date()`, `parse_decimal()`
+- `validators` - `build_transaction_from_form()`, `build_transaction_from_row()`
 - `models` - `Transaction`, `TransactionManager`
 
 #### 5.2 `ui/summary/` - 統計表示ウィンドウ
@@ -420,50 +424,40 @@ class TransactionManager:
 **責務:** 統計表示ウィンドウの GUI 構築
 
 **主要メソッド:**
-- `_create_tab(notebook, tab_name, target)` - タブの生成
-  - `target` に "支出" または "収入" を指定
+- `_create_tab(tab_name, renderer_method)` - タブの生成
+  - 各タブで `type_var`（支出/収入）を管理
   - フィルターボタンとコンテンツフレームを生成
-- 各タブの委譲メソッド（実装は logic.py に委譲）
-  - `_render_category_tab(frame, target)` - カテゴリ別タブ
-  - `_render_yearly_tab(frame, target)` - 年別タブ
-  - `_render_monthly_tab(frame, target)` - 月別タブ
-  - `_render_sample_tab(frame)` - サンプルタブ（参考実装）
+- 各タブの描画メソッド
+  - `_render_category_tab(body_frame, type_var)` - カテゴリ別タブ
+  - `_render_yearly_tab(body_frame, type_var)` - 年別タブ
+  - `_render_monthly_tab(body_frame, type_var)` - 月別タブ
+  - `_render_sample_tab(body_frame, type_var)` - サンプルタブ（参考実装）
+- テーブル関連
+  - `_create_table(...)` - テーブル初期化
+  - `_on_table_sort(...)` - 列クリックイベント（実処理は logic.py 委譲）
 
 **依存関係:** `logic` モジュールから描画関数をインポート
 
 ##### `ui/summary/logic.py`
 
-**責務:** データ集計、統計計算、グラフ描画
+**責務:** データ集計、テーブルソートイベント連携
 
 **主要関数:**
-- `filtered_items(app, target)` - 支出/収入でデータをフィルタリング
-- `prepare_render_frame(app, body_frame)` - タブのレンダリング用フレームを準備（既存ウィジェット削除）
-- `render_category_tab(app, body_frame, type_var)` - カテゴリ別集計
-  - pandas で件数・合計をカテゴリ別に集計
-  - 円グラフを matplotlib で描画
-  - Treeview でテーブル表示
-- `render_monthly_tab(app, body_frame, type_var)` - 月別集計
-  - 年月単位でデータ集計
-  - 棒グラフを matplotlib で描画
-- `render_yearly_tab(app, body_frame, type_var)` - 年別集計
-  - 年単位でデータ集計
-  - 棒グラフを matplotlib で描画
-- `render_sample_tab(app, body_frame, type_var)` - サンプルデータ表示（参考実装）
-- `create_table(app, parent, df, category_label="項目", initial_sort_column=None)` - Treeview テーブル生成
-- `setup_plot_canvas(app, parent, width_default=400)` - matplotlib Canvas を Tkinter フレームに設定
-- `draw_plot(app, parent, fig)` - matplotlib Figure をキャンバスに描画
-- `plot_pie_chart(app, parent, data, title)` - 円グラフ描画
-- `plot_bar_chart(app, parent, data, title)` - 棒グラフ描画
+- `filtered_items(items, target)` - 支出/収入でデータをフィルタリング
+- `summarize_by_category(items, target)` - カテゴリ別集計（合計・件数・割合）
+- `summarize_by_year(items, target)` - 年別集計（合計・件数）
+- `summarize_by_month(items, target)` - 月別集計（合計・件数）
+- `update_table_headers(app, tree, columns, category_label, sort_state, df)` - ヘッダー更新とクリックイベント配線
+- `on_table_sort(app, col, tree, columns, category_label, sort_state, df)` - ソート状態更新と再描画
 
 **依存関係:**
-- `constants` - TRANSACTION_TYPES
-- `formatters` - `format_yen()`
 - `pandas` - データフレーム操作（外部パッケージ）
-- `matplotlib` - グラフ描画（外部パッケージ）
+
+※ グラフ描画（matplotlib）は `ui/summary/view.py` 側で実装
 
 **設計上の特徴:**
-- pandas/matplotlib は遅延インポート（オプショナルパッケージのため）
-- グラフ描画ロジックと UI が分離
+- 集計ロジックと UI 描画を分離
+- テーブルイベント処理を関数化し、view から委譲
 - テスト・保守が容易
 
 ---
@@ -502,12 +496,12 @@ if __name__ == "__main__":
    - → `logic.py` にイベント委譲
 
 2. **検証・型変換（logic.py で実行）**
-   - `validators.parse_date()`, `validators.parse_decimal()` で正当性チェック
+  - `validators.build_transaction_from_form()` で正当性チェックと型変換
    - エラーがあればメッセージボックス表示
 
 3. **データ管理**
    - `Transaction` オブジェクト生成
-   - → `models.TransactionManager.add_item()` で登録
+  - → `models.TransactionManager.add_transaction()` で登録
 
 4. **Treeview 表示**
    - `formatters.format_yen()` で「¥1,234」に変換
@@ -519,8 +513,8 @@ if __name__ == "__main__":
    - → `view.py` で合計ラベル更新
 
 6. **統計表示**
-   - `summary/logic.py` でデータ集計（pandas）
-   - → `summary/view.py` でグラフ描画（matplotlib）
+  - `summary/logic.py` でデータ集計（pandas）
+  - `summary/view.py` でテーブル/グラフ描画（Tkinter + matplotlib）
 
 7. **永続化**
    - `TransactionManager.export_csv(path)` で CSV 保存
