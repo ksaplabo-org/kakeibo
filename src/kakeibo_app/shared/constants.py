@@ -1,4 +1,4 @@
-"""定数層 - カテゴリ、取引種別の定義"""
+"""カテゴリと取引種別の定義"""
 
 # 支出カテゴリ
 EXPENSE_CATEGORIES = [
@@ -11,5 +11,5 @@ INCOME_CATEGORIES = [
     "給与", "ボーナス", "副業", "投資", "その他収入"
 ]
 
-# 取引種別
+# 取引種別。値の集合は shared.models.TransactionType（Literal）と一致させること。
 TRANSACTION_TYPES = ["支出", "収入"]
