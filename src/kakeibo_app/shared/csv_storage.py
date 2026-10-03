@@ -85,8 +85,12 @@ def import_csv(path: str) -> CsvImportResult:
     with open(path, "r", newline="", encoding="utf-8-sig") as f:
         rows = list(csv.reader(f))
 
+    """応用課題02 START
+
+        ヘッダ行があった場合の開始行 if 0行目がヘッダ行であるか in ヘッダ行判定（この文字列があればヘッダとみなす） else ヘッダ行がない場合の開始位置
+    """
     # ヘッダ行があれば読み飛ばす
-    start_index = 1 if rows and list(rows[0]) in _KNOWN_HEADERS else 0
+    # start_index = 1 if rows and list(rows[0]) in _KNOWN_HEADERS else 0
 
     transactions: list[Transaction] = []
     errors: list[tuple[int, ValidationError]] = []
@@ -99,4 +103,8 @@ def import_csv(path: str) -> CsvImportResult:
         except ValidationError as error:
             errors.append((line_number, error))
 
+    """応用課題02 END
+
+    仕様通りに修正しよう。
+    """
     return CsvImportResult(transactions=transactions, skipped_count=len(errors), errors=errors)
