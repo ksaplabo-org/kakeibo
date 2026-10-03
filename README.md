@@ -10,7 +10,6 @@ Python + Tkinterで作成したシンプルな家計簿管理アプリケーシ�
 - [2. 主な機能](#2-主な機能)
 - [3. 必要環境](#3-必要環境)
 - [4. セットアップ](#4-セットアップ)
-  - [4.1 片づけ方（仮想環境の終了・削除）](#41-片づけ方仮想環境の終了削除)
 - [5. 起動方法](#5-起動方法)
 - [6. 使い方](#6-使い方)
   - [6.1 収支の追加](#61-収支の追加)
@@ -56,7 +55,7 @@ Windows上で動作するTkinter製のGUIアプリケーションです。
 ### 必須
 
 - **OS**: Windows
-- **Python**: 3.13.3（このバージョンで固定。事前に手動でインストールしてください）
+- **Python**: 3.14.8（このバージョンで固定）
 
 ### 依存ライブラリ
 
@@ -71,29 +70,78 @@ Windows上で動作するTkinter製のGUIアプリケーションです。
 
 ## 4. セットアップ
 
-### 1. Pythonのインストール確認
+### 4.1. VSCodeのインストール
+
+sharepointの`installer.zip` をローカルにコピーしてzipを解凍する  
+※sharepointについては有識者に確認してください。
+
+解凍後、`installer\VSCodeUserSetup-x64-1.140.0.exe`を実行する
+
+※日本語化するときは「https://www.javadrive.jp/vscode/install/index4.html 」を参照
+
+### 4.2. Gitのインストール
+
+解凍したフォルダの中の、`installer\Git-2.56.0-64-bit.exe`を実行する
+
+#### Gitのインストール確認
+1. VSCodeを起動
+2. 新しいターミナルを表示
+![alt text](assets/VSCodeターミナル表示.png)
+3. ターミナルで「git --version」のコマンドを実行  
+下記画像のように表示されていればOK
+![alt text](assets/gitバージョン確認.png)
+
+#### VSCodeでGitを使用するための初期設定
+
+設定コマンド
+```powershell
+git config --global user.name "xxx"
+git config --global user.email "xxxxxxxx+username@users.noreply.github.com"
+```
+※コミット履歴に記録されるユーザー情報設定。ユーザー名、メールアドレスは任意の値に書きかえる。メールアドレスはダミーでよい。
+
+#### リポジトリのクローン
+任意のフォルダに移動してリポジトリをクローン
 
 ```powershell
-py -3.13 --version
+# 任意のディレクトリに移動
+cd  ./work
+# リポジトリのクローン
+git clone https://github.com/ksaplabo-org/kakeibo.git
 ```
 
-Python 3.13.3 がインストールされていることを確認してください（バージョンが異なる場合、または見つからない場合は [python.org](https://www.python.org/downloads/) から 3.13.3 を入手してインストールしてください）。
 
-> **複数バージョンのPythonが入っている場合の注意**
-> `python --version` はPATHの順序によってどのバージョンが呼ばれるか不定なため、`py -3.13`（Python Launcher）でバージョンを明示的に指定してください。Windows版Pythonには標準で `py` ランチャーが同梱されています。
+### 4.3. Pythonのインストール
 
-### 2. 仮想環境の作成（推奨）
+解凍したフォルダの中の、`installer\python-3.14.8-amd64.exe`を実行する
 
-他プロジェクトの依存関係と混在しないよう、仮想環境の作成を推奨します。バージョンを明示するため `py -3.13` で作成してください。
+> ⚠️ **注意**：必ず「**Add python.exe to PATH**」にチェックを入れること
+> ![alt text](assets/Pythonインストール留意点.png)
+
+
+#### Pythonのインストール確認
 
 ```powershell
-py -3.13 -m venv .venv
+py -3.14 --version
+```
+
+> **複数バージョンのPythonが入っている場合の注意**
+> `python --version` はPATHの順序によってどのバージョンが呼ばれるか不定なため、`py -3.14`（Python Launcher）でバージョンを明示的に指定してください。Windows版Pythonには標準で `py` ランチャーが同梱されています。
+
+### 4.4. 仮想環境の作成
+
+他プロジェクトの依存関係と混在しないよう、仮想環境の作成を推奨します。バージョンを明示するため `py -3.14` で作成してください。
+
+```powershell
+# 仮想環境の作成
+py -3.14 -m venv .venv
+# 仮想環境をアクティブにする
 .venv\Scripts\activate
 ```
 
-venvを作成・activateした後は、`python`/`pip`コマンドは自動的にこの `.venv` 内の Python 3.13.3 を指すようになります。
+venvを作成・activateした後は、`python`/`pip`コマンドは自動的にこの `.venv` 内の Python 3.14.8 を指すようになります。
 
-### 3. プロジェクトのインストール
+### 4.5. プロジェクトのインストール
 
 **環境を完全に再現したい場合**（依存パッケージのバージョンを固定してインストール。`pytest` も含まれているのでテスト実行も可能）：
 
@@ -121,7 +169,7 @@ pip install -e ".[dev]"
 
 `pyproject.toml` に定義された依存ライブラリ（pandas、matplotlibなど）が自動的にインストールされます。
 
-### 4.1 片づけ方（仮想環境の終了・削除）
+### 4.6 片づけ方（仮想環境の終了・削除）
 
 作業が終わったら、まず仮想環境から抜けます。
 
@@ -143,6 +191,9 @@ Remove-Item -Recurse -Force .venv
 インストール後は、以下のコマンドで起動します。
 
 ```powershell
+# kakeibo/srcに移動
+cd  ./work/kakeibo/src
+# 起動
 python -m kakeibo_app
 ```
 
@@ -152,6 +203,8 @@ python -m kakeibo_app
 
 - タイトル: 「家計簿」
 - ウィンドウサイズ: 820x560
+
+![alt text](assets/家計簿-収支入力画面.png)
 
 ---
 
