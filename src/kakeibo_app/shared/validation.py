@@ -54,6 +54,10 @@ def parse_amount(text: str) -> int:
             field="amount",
         )
 
+    """基本課題07 START
+
+    仕様通りに修正しよう。
+    """
     # カンマを除去して整数に変換
     value = int(match.group(1).replace(",", ""))
     if value < 1:
@@ -62,6 +66,10 @@ def parse_amount(text: str) -> int:
             code="invalid_amount",
             field="amount",
         )
+    """基本課題07 END
+
+    仕様通りに修正しよう。
+    """
     return value
 
 
@@ -153,7 +161,10 @@ def build_transaction(
         memo=memo.strip(),
     )
 
+"""応用課題01 START
 
+仕様通りに修正しよう。
+"""
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:
     """CSV の1行（4列または5列）から検証済みの Transaction を生成する"""
     if len(row) not in (4, 5):
@@ -171,3 +182,7 @@ def build_transaction_from_row(row: Sequence[str]) -> Transaction:
         amount_text=amount_text,
         memo=memo,
     )
+"""応用課題01 END
+
+仕様通りに修正しよう。
+"""
