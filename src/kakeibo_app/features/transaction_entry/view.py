@@ -84,10 +84,18 @@ class MainWindow(tk.Tk):
                 command=lambda: on_type_changed(self),
             ).pack(side="left", padx=3)
 
+        """基本課題01 START
+        
+        レイアウトを修正しよう。
+        """
         # Row 0: 日付
         ttk.Label(form, text="日付").grid(row=0, column=2, sticky="e", padx=self.LABEL_PADX, pady=self.FORM_PADY_ROW)
         self.date_var = tk.StringVar(value=date.today().strftime("%Y/%m/%d"))
         ttk.Entry(form, textvariable=self.date_var, width=15).grid(row=0, column=3, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_ROW)
+        """基本課題01 END
+        
+        レイアウトを修正しよう。
+        """
 
         # Row 1: カテゴリ
         ttk.Label(form, text="カテゴリ").grid(row=1, column=0, sticky="e", padx=self.INNER_PADX, pady=self.FORM_PADY_ROW)
@@ -116,9 +124,17 @@ class MainWindow(tk.Tk):
         button_frame = ttk.Frame(form)
         button_frame.grid(row=2, column=4, sticky="sw", padx=self.INNER_PADX, pady=self.FORM_PADY_ROW)
 
+        """基本課題02 START
+        
+        logic.pyからメソッドを探そう。
+        """
         self.add_update_button = ttk.Button(button_frame, text="追加", command=lambda: on_add_or_update(self))
         self.add_update_button.pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
         ttk.Button(button_frame, text="クリア", command=lambda: on_clear_inputs(self)).pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
+        """基本課題02 END
+        
+        logic.pyからメソッドを探そう。
+        """
 
         # 取引一覧（Treeview）
         list_frame = ttk.Frame(self)

@@ -6,18 +6,27 @@ def format_yen(value: int) -> str:
     # ":," は3桁ごとにカンマ区切りを入れる書式指定
     return f"¥{value:,}"
 
+"""基本課題05 START
 
+正しいreturn文に修正しよう。
+"""
 def format_month_label(month: str) -> str:
     """「2026-05」形式の年月文字列を「2026年5月」形式に変換する"""
     year, month_number = month.split("-")
     return f"{year}年{int(month_number)}月"
+"""基本課題05 END
 
+正しいreturn文に修正しよう。
+"""
 
 def format_year_label(year: str) -> str:
     """「2026」形式の年文字列を「2026年」形式に変換する"""
     return f"{year}年"
 
+"""基本課題06 START
 
+if文を修正しよう。
+"""
 def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     """列見出しにソート状態（▲/▼）を付与する
 
@@ -36,3 +45,7 @@ def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     else:
         arrow = "▼" if reverse else "▲"
     return f"{label} {arrow}"
+"""基本課題06 END
+
+if文を修正しよう。
+"""
