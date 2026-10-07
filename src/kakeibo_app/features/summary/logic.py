@@ -307,6 +307,10 @@ def plot_pie_chart(parent, data, title) -> None:
     fig = Figure(figsize=_calculate_figure_size(parent, width_default=400), constrained_layout=True)
     ax = fig.add_subplot(111)
 
+    """発展課題01 START
+
+    円グラフを正しく描画させよう。
+    """
     totals = data["合計"]
     percentages = (totals / totals.sum() * 100).round(1)
     # 凡例に表示する「カテゴリ名 (割合%)」のラベルを作成
@@ -314,6 +318,10 @@ def plot_pie_chart(parent, data, title) -> None:
         f"{category} ({percentage:.1f}%)"
         for category, percentage in zip(data.index, percentages)
     ]
+    """発展課題01 END
+
+    円グラフを正しく描画させよう。
+    """
 
     ax.pie(totals, startangle=90)
     ax.set_title(title)
@@ -332,9 +340,17 @@ def plot_bar_chart(parent, data, title) -> None:
     ax.set_ylabel("金額(千円)")
     ax.set_xlabel("")
     # X軸のラベルを斜めにして見やすくする
+    """発展課題02 START
+
+    棒グラフのラベルを正しく描画させよう。
+    """
     for label in ax.get_xticklabels():
         label.set_rotation(45)
     embed_figure(parent, fig)
+    """発展課題02 END
+
+    棒グラフを正しく描画させよう。
+    """
 
 
 def plot_net_line_chart(parent, data, title) -> None:
