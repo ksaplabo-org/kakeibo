@@ -87,10 +87,11 @@ def import_csv(path: str) -> CsvImportResult:
 
     """応用課題02 START
 
-        ヘッダ行があった場合の開始行 if 0行目がヘッダ行であるか in ヘッダ行判定（この文字列があればヘッダとみなす） else ヘッダ行がない場合の開始位置
+    仕様通りに修正しよう。
+    補足：条件式を追加する。（三項演算子）
     """
     # ヘッダ行があれば読み飛ばす
-    # start_index = 1 if rows and list(rows[0]) in _KNOWN_HEADERS else 0
+    """ここに記載する"""
 
     transactions: list[Transaction] = []
     errors: list[tuple[int, ValidationError]] = []

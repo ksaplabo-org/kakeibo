@@ -8,18 +8,18 @@ def format_yen(value: int) -> str:
 
 """基本課題05 START
 
-正しいreturnを返そう。
+正しいreturn文に修正しよう。
+補足：文字列を変換させる。
+    STEP1   month には「2026-05」形式なので、split メソッドを使用して year 、 month_number に代入する。
+    STEP2   year 、 month_number を使用して正しいretrun文に修正する。
 """
 def format_month_label(month: str) -> str:
     """「2026-05」形式の年月文字列を「2026年5月」形式に変換する"""
-    # year, month_number = month.split("-")
-    # return f"{year}年{int(month_number)}月"
     return "2026年11月"
 """基本課題05 END
 
-正しいreturnを返そう。
+正しいreturn文に修正しよう。
 """
-
 
 def format_year_label(year: str) -> str:
     """「2026」形式の年文字列を「2026年」形式に変換する"""
@@ -28,6 +28,10 @@ def format_year_label(year: str) -> str:
 """基本課題06 START
 
 if文を修正しよう。
+補足：二重if文（ネスト/入れ子）について
+    分岐の中にさらに分岐がある構造のこと。
+    
+    例）別途資料参照（1dayインターン_ネストについて.pptx）
 """
 def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     """列見出しにソート状態（▲/▼）を付与する
@@ -42,12 +46,7 @@ def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     Returns:
         「日付 ▲」のような見出し文字列
     """
-    # if not active:
-    #     arrow = "▽"
-    # else:
-    #     arrow = "▼" if reverse else "▲"
-
-    if active:
+    if not active:
         arrow = "▽"
     else:
         arrow = "▼"

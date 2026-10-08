@@ -314,11 +314,9 @@ def plot_pie_chart(parent, data, title) -> None:
     totals = data["合計"]
     # percentages = (totals / totals.sum() * 100).round(1)
     # 凡例に表示する「カテゴリ名 (割合%)」のラベルを作成
-    # legend_labels = [
-    #     f"{category} ({percentage:.1f}%)"
-    #     for category, percentage in zip(data.index, percentages)
-    # ]
-    legend_labels = []
+    legend_labels = [
+    """ここに記載する"""
+    ]
     """発展課題01 END
 
     円グラフを正しく描画させる
@@ -343,11 +341,12 @@ def plot_bar_chart(parent, data, title) -> None:
     # X軸のラベルを斜めにして見やすくする
     """発展課題02 START
 
-    棒グラフのラベルを正しく描画させる
+    棒グラフのラベルを正しく描画させよう。
+    補足：for文を用いて描画させる。
     """
-    # for label in ax.get_xticklabels():
-    #     label.set_rotation(45)
-    # embed_figure(parent, fig)
+    
+    """ここに記載する"""
+
     """発展課題02 END
 
     棒グラフを正しく描画させる

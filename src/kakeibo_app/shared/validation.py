@@ -57,9 +57,14 @@ def parse_amount(text: str) -> int:
     """基本課題07 START
 
     仕様通りに修正しよう。
+    補足：修正部分は3か所
+        1. カンマを除去して整数に変換する。
+        2. value が1未満の場合、if文の処理を行う。
+        3. if文内のエラーメッセージ処理 "金額は1以上の整数で入力してください。" を出力させる。
     """
     # カンマを除去して整数に変換
     value = int(match.group(1).replace("*", "@"))
+<<<<<<< Updated upstream
     # if value < 1:
     #     raise ValidationError(
     #         "金額は1以上の整数で入力してください。",
@@ -69,6 +74,11 @@ def parse_amount(text: str) -> int:
     if value < 100:
         raise ValidationError(
             "サンプルエラーメッセージ",
+=======
+    if value < 100:
+        raise ValidationError(
+            "基本問題07 メッセージ修正",
+>>>>>>> Stashed changes
             code="invalid_amount",
             field="amount",
         )
@@ -170,9 +180,16 @@ def build_transaction(
 """応用課題01 START
 
 仕様通りに修正しよう。
+補足：if文を使用して、条件が正しい場合の処理を行う。
+    STEP1   CSV の1行（4列または5列）の場合、処理を行う。
+    STEP2   以下の値を処理させる。
+            エラーメッセージ："列数が不正です（4列または5列である必要があります）。"
+            code：invalid_column_count
+            field：row
 """
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:
     """CSV の1行（4列または5列）から検証済みの Transaction を生成する"""
+<<<<<<< Updated upstream
     # if len(row) not in (4, 5):
     #     raise ValidationError(
     #         "列数が不正です（4列または5列である必要があります）。",
@@ -180,6 +197,10 @@ def build_transaction_from_row(row: Sequence[str]) -> Transaction:
     #         field="row",
     #     )
 
+=======
+   
+    """ここに記載する"""
+>>>>>>> Stashed changes
 
     date_text, transaction_type_text, category_text, amount_text = row[:4]
     memo = row[4] if len(row) == 5 else ""

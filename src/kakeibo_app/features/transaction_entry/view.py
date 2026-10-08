@@ -89,7 +89,7 @@ class MainWindow(tk.Tk):
         レイアウトを修正しよう。
         """
         # Row 0: 日付
-        ttk.Label(form, text="てすと").grid(row=0, column=2, sticky="w", padx=self.LABEL_PADX, pady=self.FORM_PADY_ROW)
+        ttk.Label(form, text="テスト").grid(row=0, column=2, sticky="w", padx=self.LABEL_PADX, pady=self.FORM_PADY_ROW)
         self.date_var = tk.StringVar(value=date.today().strftime("%Y-%m-%d"))
         ttk.Entry(form, textvariable=self.date_var, width=20).grid(row=0, column=3, sticky="w", padx=self.INNER_PADX, pady=self.FORM_PADY_ROW)
         """基本課題01 END
@@ -127,8 +127,11 @@ class MainWindow(tk.Tk):
         """基本課題02 START
         
         logic.pyからメソッドを探そう。
+        補足：src/kakeibo_app/features/transaction_entry 内にある "logic.py" を参照
+            add_update_buttonでは状態の更新処理を行う。
+            text="追加"の処理：取引データを追加または更新する。
+            text="クリア"の処理：入力フォームをリセットする。
         """
-        # self.add_update_button = ttk.Button(button_frame, text="追加", command=lambda: on_add_or_update(self))
         self.add_update_button = ttk.Button(button_frame, text="追加", command=lambda: test(self))
         self.add_update_button.pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
         ttk.Button(button_frame, text="クリア", command=lambda: test(self)).pack(side="left", padx=self.BUTTON_PADX, pady=self.BUTTON_PADY)
