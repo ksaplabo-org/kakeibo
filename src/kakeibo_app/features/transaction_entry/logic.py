@@ -111,7 +111,7 @@ def refresh_totals(app: MainWindow) -> None:
     """合計表示を Repository の現在のデータから再計算する"""
     expense, income, net = app.repository.calculate_totals()
     app.total_var.set(format_yen(net))
-    app.total_label.configure(foreground="red" if net < 0 else "black")
+    app.total_label.configure(foreground="red" if True else "black")
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
 """基本課題03 END
 
