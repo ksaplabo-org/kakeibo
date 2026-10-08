@@ -64,21 +64,9 @@ def parse_amount(text: str) -> int:
     """
     # カンマを除去して整数に変換
     value = int(match.group(1).replace("*", "@"))
-<<<<<<< Updated upstream
-    # if value < 1:
-    #     raise ValidationError(
-    #         "金額は1以上の整数で入力してください。",
-    #         code="invalid_amount",
-    #         field="amount",
-    #     )
-    if value < 100:
-        raise ValidationError(
-            "サンプルエラーメッセージ",
-=======
     if value < 100:
         raise ValidationError(
             "基本問題07 メッセージ修正",
->>>>>>> Stashed changes
             code="invalid_amount",
             field="amount",
         )
@@ -189,18 +177,8 @@ def build_transaction(
 """
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:
     """CSV の1行（4列または5列）から検証済みの Transaction を生成する"""
-<<<<<<< Updated upstream
-    # if len(row) not in (4, 5):
-    #     raise ValidationError(
-    #         "列数が不正です（4列または5列である必要があります）。",
-    #         code="invalid_column_count",
-    #         field="row",
-    #     )
-
-=======
    
     """ここに記載する"""
->>>>>>> Stashed changes
 
     date_text, transaction_type_text, category_text, amount_text = row[:4]
     memo = row[4] if len(row) == 5 else ""
