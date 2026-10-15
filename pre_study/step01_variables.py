@@ -2,6 +2,8 @@
 
 このファイルの動かし方：
     VSCode 右上の ▷（Run Python File）を押す。
+    または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
+        python pre_study/step01_variables.py
     画面下の「ターミナル」に結果が表示される。
 
 一番下に「答え合わせ」があるので、全部 ○ になればクリア。
