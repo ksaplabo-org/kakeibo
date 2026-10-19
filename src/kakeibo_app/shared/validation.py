@@ -161,9 +161,22 @@ def build_transaction(
         memo=memo.strip(),
     )
 
-"""応用課題01 START
+"""応用課題01 START ファイル取り込みデータ取得関数の修正
 
-仕様通りに修正しよう。
+仕様：
+・取り込んだCSVファイルの列数が4列か5列ではなかった場合はエラーにし、
+   エラーメッセージ「列数が不正です（4列または5列である必要があります）。」を表示する。
+・４列か５列だった場合はファイルのデータの読み込みをする
+
+ヒント：
+・エラーの条件分岐はリストを活用
+・エラーの処理は基本問題07を参考に作成
+
+※ValidationErrorの引数では下記を指定すること
+  code="invalid_column_count",
+  field="row",
+
+
 """
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:
     """CSV の1行（4列または5列）から検証済みの Transaction を生成する"""
@@ -182,7 +195,4 @@ def build_transaction_from_row(row: Sequence[str]) -> Transaction:
         amount_text=amount_text,
         memo=memo,
     )
-"""応用課題01 END
-
-仕様通りに修正しよう。
-"""
+"""応用課題01 END ファイル取り込みデータ取得関数の修正 """
