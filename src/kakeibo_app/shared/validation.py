@@ -54,9 +54,18 @@ def parse_amount(text: str) -> int:
             field="amount",
         )
 
-    """基本課題07 START
+     """基本課題07 START チェック処理の修正 
 
-    仕様通りに修正しよう。
+    仕様：
+    ・金額が1以上ではない時はエラーにして、
+       エラーメッセージ「金額は1以上の整数で入力してください。」を表示する
+
+    ヒント:
+    ・修正ポイントは三か所
+     - replaceを使ってカンマを除去し、整数にする
+     - if文を修正して1以上ではない時はエラーにする
+     - エラーメッセージを仕様通りに修正する
+
     """
     # カンマを除去して整数に変換
     value = int(match.group(1).replace(",", ""))
@@ -66,10 +75,7 @@ def parse_amount(text: str) -> int:
             code="invalid_amount",
             field="amount",
         )
-    """基本課題07 END
-
-    仕様通りに修正しよう。
-    """
+    """基本課題07 END チェック処理の修正 """
     return value
 
 
@@ -175,7 +181,6 @@ def build_transaction(
 ※ValidationErrorの引数では下記を指定すること
   code="invalid_column_count",
   field="row",
-
 
 """
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:

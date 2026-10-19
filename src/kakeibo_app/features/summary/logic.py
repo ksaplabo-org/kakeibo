@@ -307,9 +307,18 @@ def plot_pie_chart(parent, data, title) -> None:
     fig = Figure(figsize=_calculate_figure_size(parent, width_default=400), constrained_layout=True)
     ax = fig.add_subplot(111)
 
-    """発展課題01 START
+    """発展課題01 START 円グラフの凡例表示の修正
 
-    円グラフを正しく描画させよう。
+    仕様：
+     ・カテゴリ名（〇〇.〇%）で割合の多い順に表示
+       ※カラーチャートは今回の対象外
+
+    ヒント：
+    ・下記を自分で調べて考えてみよう
+      - zip()
+      - リスト内包表記
+      - 少数第一位のフォーマット
+
     """
     totals = data["合計"]
     percentages = (totals / totals.sum() * 100).round(1)
@@ -318,10 +327,7 @@ def plot_pie_chart(parent, data, title) -> None:
         f"{category} ({percentage:.1f}%)"
         for category, percentage in zip(data.index, percentages)
     ]
-    """発展課題01 END
-
-    円グラフを正しく描画させよう。
-    """
+    """発展課題01 END 円グラフの凡例表示の修正 """
 
     ax.pie(totals, startangle=90)
     ax.set_title(title)
@@ -340,17 +346,19 @@ def plot_bar_chart(parent, data, title) -> None:
     ax.set_ylabel("金額(千円)")
     ax.set_xlabel("")
     # X軸のラベルを斜めにして見やすくする
-    """発展課題02 START
+    """発展課題02 START 棒グラフのラベルの表示修正 
+    
+    仕様：
+    ・ラベルは45度傾けて右図の赤枠のように表示
 
-    棒グラフのラベルを正しく描画させよう。
+    ヒント：
+    ・ほかの処理を参考にしてください
+
     """
     for label in ax.get_xticklabels():
         label.set_rotation(45)
     embed_figure(parent, fig)
-    """発展課題02 END
-
-    棒グラフを正しく描画させよう。
-    """
+    """発展課題02 END 棒グラフのラベルの表示修正 """
 
 
 def plot_net_line_chart(parent, data, title) -> None:
