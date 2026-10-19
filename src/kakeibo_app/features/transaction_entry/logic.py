@@ -103,9 +103,18 @@ def _select_row(app: MainWindow, transaction_id: int) -> None:
     app.tree.focus(iid)
     app.tree.see(iid)
 
-"""基本課題03 START
+"""基本課題03 START 合計がマイナスの時は赤字で表示
 
-if文を修正しよう。
+仕様:
+・合計がプラスの時は“黒字”、 合計がマイナスの時は“赤字”で表示する
+
+現状:
+・合計値がプラスでもマイナスでも赤字で表示される
+
+ヒント:  
+・if True … は常に正になる
+・三項演算子の使い方を確認しよう
+
 """
 def refresh_totals(app: MainWindow) -> None:
     """合計表示を Repository の現在のデータから再計算する"""
@@ -113,10 +122,7 @@ def refresh_totals(app: MainWindow) -> None:
     app.total_var.set(format_yen(net))
     app.total_label.configure(foreground="red" if True else "black")
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
-"""基本課題03 END
-
-if文を修正しよう。
-"""
+"""基本課題03 END 合計がマイナスの時は赤字で表示 """
 
 def refresh_derived_display(app: MainWindow) -> None:
     """一覧・合計など、Repository から導かれる表示をまとめて再構築する
@@ -136,9 +142,17 @@ def on_sort_column(app: MainWindow, column: str) -> None:
         app.sort_reverse = False
     refresh_list(app)
 
-"""基本課題04 START
+"""基本課題04 START 収入/支出のカテゴリを正しく設定
+仕様：
+・ラジオボタンで“支出”選択時は”支出”のカテゴリを設定
+・ラジオボタンで“収入”選択時は”収入”のカテゴリを設定
 
-収入カテゴリを修正しよう。
+現状：
+・ラジオボタンでどちらを選択しても“支出”のカテゴリが設定される
+
+ヒント：
+・支出のカテゴリはどのように設定されていて、どこで宣言されているかを確認しよう
+
 """
 def on_type_changed(app: MainWindow) -> None:
     """支出/収入が変更された時にカテゴリを更新する"""
@@ -146,13 +160,10 @@ def on_type_changed(app: MainWindow) -> None:
     if transaction_type == "支出":
         categories = EXPENSE_CATEGORIES
     else:
-        categories = INCOME_CATEGORIES
+        categories = EXPENSE_CATEGORIES
     app.category_combo.configure(values=categories)
     app.category_var.set(categories[0])
-"""基本課題04 END
-
-収入カテゴリを修正しよう。
-"""
+"""基本課題04 END 収入/支出のカテゴリを正しく設定 """
 
 def _enter_edit_mode(app: MainWindow, transaction_id: int, transaction: Transaction) -> None:
     """編集モードに入る（フォームは Repository から取得した Transaction で埋める）"""
