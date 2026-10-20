@@ -54,7 +54,7 @@ def parse_amount(text: str) -> int:
             field="amount",
         )
 
-     """基本課題07 START チェック処理の修正 
+    """基本課題07 START チェック処理の修正 
 
     仕様：
     ・金額が1以上ではない時はエラーにして、
