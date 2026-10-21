@@ -42,6 +42,9 @@ def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     if not active:
         arrow = "▽"
     else:
-        arrow = "▼" if reverse else "▲"
+        if reverse:
+            arrow = "▼" 
+        else:
+            arrow = "▲"
     return f"{label} {arrow}"
 """追加課題01 END ソートの表示制御関数の修正 """
