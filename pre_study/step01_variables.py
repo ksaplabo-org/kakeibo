@@ -2,6 +2,8 @@
 
 このファイルの動かし方：
     VSCode 右上の ▷（Run Python File）を押す。
+    または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
+        python pre_study/step01_variables.py
     画面下の「ターミナル」に結果が表示される。
 
 一番下に「答え合わせ」があるので、全部 ○ になればクリア。
@@ -59,6 +61,8 @@ def check(label, func, expected):
         actual = f"エラー {type(error).__name__}: {error}"
     if actual == expected:
         print(f"  ○ {label}")
+        print(f"      期待する結果: {expected!r}")
+        print(f"      実際の結果  : {actual!r}")
         return True
     print(f"  × {label}")
     print(f"      期待する結果: {expected!r}")
@@ -72,6 +76,6 @@ results = [
     check("nokori の値", lambda: nokori, 1950),
 ]
 if all(results):
-    print("STEP01 クリア！ 次は step02_function.py に進もう。")
+    print("STEP01 クリア！")
 else:
     print("× のところを見直そう。")
