@@ -85,20 +85,6 @@ def import_csv(path: str) -> CsvImportResult:
     with open(path, "r", newline="", encoding="utf-8-sig") as f:
         rows = list(csv.reader(f))
 
-    """応用課題02 START ファイル読み込み行取得の処理の修正 
-
-    前提情報：
-     ・取り込むCSVは一行目がヘッダー行でもデータ行から始まってもどちらでも対応している
-     ・取り込み可能なファイルのヘッダー情報は同ファイル19行目の定数「_KNOWN_HEADERS」に定義している
-     ・取り込み開始行は変数「start_index」に数値で持たせる
-
-    仕様：
-    ・取り込むファイルにヘッダー行があれば1行目からなければ0行目から取り込みを行う
-
-    ヒント：
-    ・list(rows[0])で一行目のデータを取得できる
-
-    """
     # ヘッダ行があれば読み飛ばす
     start_index = 1 if rows and list(rows[0]) in _KNOWN_HEADERS else 0
 
@@ -113,5 +99,4 @@ def import_csv(path: str) -> CsvImportResult:
         except ValidationError as error:
             errors.append((line_number, error))
 
-    """応用課題02 END ファイル読み込み行取得の処理の修正 """
     return CsvImportResult(transactions=transactions, skipped_count=len(errors), errors=errors)
