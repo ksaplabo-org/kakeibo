@@ -112,17 +112,19 @@ def _select_row(app: MainWindow, transaction_id: int) -> None:
 ・合計値がプラスでもマイナスでも赤字で表示される
 
 ヒント:  
-・if文を使ってnet_colorの値を分岐させる
+・if True … は常に正になる
 
 """
 def refresh_totals(app: MainWindow) -> None:
     """合計表示を Repository の現在のデータから再計算する"""
     expense, income, net = app.repository.calculate_totals()
     app.total_var.set(format_yen(net))
-    net_color ="red"
+    if True:
+        net_color ="red"
+    else:
+        net_color ="black"
     app.total_label.configure(foreground=net_color)
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
-"""基本課題03 END 合計がマイナスの時は赤字で表示 """
 
 def refresh_derived_display(app: MainWindow) -> None:
     """一覧・合計など、Repository から導かれる表示をまとめて再構築する
@@ -151,16 +153,15 @@ def on_sort_column(app: MainWindow, column: str) -> None:
 ・ラジオボタンでどちらを選択しても“支出”のカテゴリが設定される
 
 ヒント：
+・「transaction_type」にはラジオボタンの選択によって”支出”または”収入”が設定される
+・if文を使用して「categories」の値を分岐して設定しよう
 ・支出のカテゴリはどのように設定されていて、どこで宣言されているかを確認しよう
 
 """
 def on_type_changed(app: MainWindow) -> None:
     """支出/収入が変更された時にカテゴリを更新する"""
     transaction_type = app.type_var.get()
-    if transaction_type == "支出":
-        categories = EXPENSE_CATEGORIES
-    else:
-        categories = EXPENSE_CATEGORIES
+    categories = EXPENSE_CATEGORIES
     app.category_combo.configure(values=categories)
     app.category_var.set(categories[0])
 """基本課題04 END 収入/支出のカテゴリを正しく設定 """
