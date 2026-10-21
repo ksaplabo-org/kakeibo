@@ -112,7 +112,7 @@ def _select_row(app: MainWindow, transaction_id: int) -> None:
 ・合計値がプラスでもマイナスでも赤字で表示される
 
 ヒント:  
-・if True … は常に正になる
+・if文を使ってnet_colorの値を分岐させる
 
 """
 def refresh_totals(app: MainWindow) -> None:
