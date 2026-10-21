@@ -1,9 +1,9 @@
-"""STEP07 別のファイルの関数を使う（import）、ボタンに関数を登録する
+"""STEP05 別のファイルの関数を使う（import）、ボタンに関数を登録する
 
 実行方法：
     VSCode 右上の ▷（Run Python File）を押す。
     または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
-        python pre_study/step07_import/main.py
+        python pre_study/step05_import/main.py
     画面下の「ターミナル」に結果が表示される。
 
 このフォルダには3つのファイルがある。
@@ -12,7 +12,6 @@
     button.py  … 画面のボタンの代わりをする部品（読まなくてOK）
 
 一番下に「答え合わせ」があるので、全部 ○ になればクリア。
-本課題では「基本課題02」（features/transaction_entry/view.py）で使います。
 """
 
 # --- 例：まずはこのまま読んでみよう ---------------------------------
@@ -31,7 +30,7 @@ show_button = Button(text="表示", command=lambda: show_items(app))
 # ---------------------------------------------------------------------
 
 
-"""STEP07-1 START
+"""STEP05-1 START
 
 logic.pyからメソッドを探そう。
 補足：logic.py を開いて、それぞれのボタンに合う関数を探す。
@@ -40,7 +39,7 @@ logic.pyからメソッドを探そう。
 """
 add_button = Button(text="追加", command=lambda: test(app))
 clear_button = Button(text="クリア", command=lambda: test(app))
-"""STEP07-1 END
+"""STEP05-1 END
 
 logic.pyからメソッドを探そう。
 """
@@ -79,6 +78,8 @@ def check(label, func, expected):
         actual = f"エラー {type(error).__name__}: {error}"
     if actual == expected:
         print(f"  ○ {label}")
+        print(f"      期待する結果: {expected!r}")
+        print(f"      実際の結果  : {actual!r}")
         return True
     print(f"  × {label}")
     print(f"      期待する結果: {expected!r}")
@@ -87,12 +88,12 @@ def check(label, func, expected):
 
 
 print()
-print("===== STEP07 答え合わせ =====")
+print("===== STEP05 答え合わせ =====")
 results = [
     check("「クリア」の後", lambda: after_clear, {"input": "", "items": ["牛乳"]}),
     check("2回目の「追加」の後", lambda: after_second_add, {"input": "", "items": ["牛乳", "たまご"]}),
 ]
 if all(results):
-    print("STEP07 クリア！ 次は step08_gui.py に進もう。")
+    print("STEP05 クリア！")
 else:
     print("× のところを見直そう。")

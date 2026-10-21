@@ -1,23 +1,22 @@
-"""STEP08 はじめての画面（tkinter）
+"""STEP06 はじめての画面（tkinter）
 
 実行方法：
     VSCode 右上の ▷（Run Python File）を押す。
     または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
-        python pre_study/step08_gui.py
+        python pre_study/step06_gui.py
 
 実行するとウィンドウが開く。このステップは「答え合わせ」の代わりに、
 画面が下の完成イメージと同じになり、ボタンが正しく動けばクリア。
-本課題では「基本課題01」「基本課題02」（features/transaction_entry/view.py）で使います。
 
 完成イメージ：
     ┌──────────────────────────────────┐
     │  品名 [                    ]     │
     │  金額 [                    ]     │
-    │       [追加] [クリア]             │
+    │               [追加] [クリア]     │
     │  （ここにメッセージが出る）        │
     └──────────────────────────────────┘
 
-    ・品名と金額を入れて「追加」を押すと「牛乳を180円で追加しました。」と表示される
+    ・品名と金額を入れて「追加」を押すと「○○を○○円で追加しました。」と表示される
     ・「クリア」を押すと品名と金額の入力欄が空になる
 """
 
@@ -42,7 +41,7 @@ def on_clear():
 
 # --- 画面を作る ------------------------------------------------------
 root = tk.Tk()
-root.title("STEP08 はじめての画面")
+root.title("STEP06 はじめての画面")
 
 form = ttk.Frame(root, padding=12)
 form.pack()
@@ -57,7 +56,7 @@ ttk.Label(form, text="品名").grid(row=0, column=0, sticky="e", padx=6, pady=6)
 name_var = tk.StringVar()
 ttk.Entry(form, textvariable=name_var, width=20).grid(row=0, column=1, sticky="w", padx=6, pady=6)
 
-"""STEP08-1 START
+"""STEP06-1 START
 
 レイアウトを修正しよう。
 補足：「金額」の行が、品名の右側にずれて表示されている。
@@ -68,7 +67,7 @@ ttk.Entry(form, textvariable=name_var, width=20).grid(row=0, column=1, sticky="w
 ttk.Label(form, text="テスト").grid(row=0, column=2, sticky="w", padx=6, pady=6)
 amount_var = tk.StringVar()
 ttk.Entry(form, textvariable=amount_var, width=20).grid(row=0, column=3, sticky="w", padx=6, pady=6)
-"""STEP08-1 END
+"""STEP06-1 END
 
 レイアウトを修正しよう。
 """
@@ -77,7 +76,7 @@ ttk.Entry(form, textvariable=amount_var, width=20).grid(row=0, column=3, sticky=
 button_frame = ttk.Frame(form)
 button_frame.grid(row=2, column=1, sticky="w", padx=6, pady=6)
 
-"""STEP08-2 START
+"""STEP06-2 START
 
 このファイルの中からメソッドを探そう。
 補足：ボタンを押したときに呼ぶ関数を command= に登録する。
@@ -86,7 +85,7 @@ button_frame.grid(row=2, column=1, sticky="w", padx=6, pady=6)
 """
 ttk.Button(button_frame, text="追加", command=lambda: test()).pack(side="left", padx=3)
 ttk.Button(button_frame, text="クリア", command=lambda: test()).pack(side="left", padx=3)
-"""STEP08-2 END
+"""STEP06-2 END
 
 このファイルの中からメソッドを探そう。
 """
@@ -96,8 +95,8 @@ message_var = tk.StringVar(value="品名と金額を入力してください。"
 ttk.Label(form, textvariable=message_var).grid(row=3, column=0, columnspan=2, sticky="w", padx=6, pady=6)
 
 # ヒント（詰まったら読もう）
-# STEP08-1：row が「何行目か」、column が「何列目か」。品名の行は row=0。
-# STEP08-2：STEP07 と同じ形。このファイルの上のほうにある関数を探そう。
+# STEP06-1：row が「何行目か」、column が「何列目か」。品名の行は row=0。
+# STEP06-2：STEP05 と同じ形。このファイルの上のほうにある関数を探そう。
 
 # ウィンドウを表示し続ける（閉じるまでここで待つ）
 root.mainloop()

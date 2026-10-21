@@ -112,15 +112,15 @@ def _select_row(app: MainWindow, transaction_id: int) -> None:
 ・合計値がプラスでもマイナスでも赤字で表示される
 
 ヒント:  
-・if True … は常に正になる
-・三項演算子の使い方を確認しよう
+・if文を使ってnet_colorの値を分岐させる
 
 """
 def refresh_totals(app: MainWindow) -> None:
     """合計表示を Repository の現在のデータから再計算する"""
     expense, income, net = app.repository.calculate_totals()
     app.total_var.set(format_yen(net))
-    app.total_label.configure(foreground="red" if True else "black")
+    net_color ="red"
+    app.total_label.configure(foreground=net_color)
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
 """基本課題03 END 合計がマイナスの時は赤字で表示 """
 

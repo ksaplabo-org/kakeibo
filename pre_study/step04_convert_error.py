@@ -1,13 +1,12 @@
-"""STEP05 文字列から数値への変換、エラーを出す（raise）
+"""STEP04 文字列から数値への変換、エラーを出す（raise）
 
 実行方法：
     VSCode 右上の ▷（Run Python File）を押す。
     または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
-        python pre_study/step05_convert_error.py
+        python pre_study/step04_convert_error.py
     画面下の「ターミナル」に結果が表示される。
 
 一番下に「答え合わせ」があるので、全部 ○ になればクリア。
-本課題では「基本課題07」「応用課題01」（shared/validation.py）で使います。
 """
 
 # --- 例：まずはこのまま読んでみよう ---------------------------------
@@ -37,7 +36,7 @@ except ValueError as error:
 # ---------------------------------------------------------------------
 
 
-"""STEP05-1 START
+"""STEP04-1 START
 
 仕様通りに修正しよう。
 補足：修正部分は3か所
@@ -50,15 +49,15 @@ def parse_points(text):
     # カンマを除去して整数に変換
     value = int(text.replace("*", "@"))
     if value < 100:
-        raise ValueError("STEP05-1 メッセージ修正")
+        raise ValueError("STEP04-1 メッセージ修正")
     return value
-"""STEP05-1 END
+"""STEP04-1 END
 
 仕様通りに修正しよう。
 """
 
 
-"""STEP05-2 START
+"""STEP04-2 START
 
 仕様通りに修正しよう。
 補足：if文を使用して、条件が正しい場合の処理を行う。
@@ -71,14 +70,14 @@ def check_item_name(name):
     """ここに記載する"""
 
     return name
-"""STEP05-2 END
+"""STEP04-2 END
 
 仕様通りに修正しよう。
 """
 
 # ヒント（詰まったら読もう）
-# STEP05-1：例の "1,500".replace(",", "") を参考にしよう。
-# STEP05-2：例の check_age と同じ形。「空の文字列」は name == "" と書く。
+# STEP04-1：例の "1,500".replace(",", "") を参考にしよう。
+# STEP04-2：例の check_age と同じ形。「空の文字列」は name == "" と書く。
 
 
 # =====================================================================
@@ -91,6 +90,8 @@ def check(label, func, expected):
         actual = f"エラー {type(error).__name__}: {error}"
     if actual == expected:
         print(f"  ○ {label}")
+        print(f"      期待する結果: {expected!r}")
+        print(f"      実際の結果  : {actual!r}")
         return True
     print(f"  × {label}")
     print(f"      期待する結果: {expected!r}")
@@ -99,7 +100,7 @@ def check(label, func, expected):
 
 
 print()
-print("===== STEP05 答え合わせ =====")
+print("===== STEP04 答え合わせ =====")
 results = [
     check('parse_points("1,500")', lambda: parse_points("1,500"), 1500),
     check('parse_points("50")', lambda: parse_points("50"), 50),
@@ -113,6 +114,6 @@ results = [
     check('check_item_name("")', lambda: check_item_name(""), "エラー ValueError: 品名を入力してください。"),
 ]
 if all(results):
-    print("STEP05 クリア！ 次は step06_list_for.py に進もう。")
+    print("STEP04 クリア！")
 else:
     print("× のところを見直そう。")

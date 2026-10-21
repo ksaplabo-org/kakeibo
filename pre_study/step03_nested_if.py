@@ -1,13 +1,12 @@
-"""STEP04 二重 if 文（ネスト／入れ子）
+"""STEP03 二重 if 文（ネスト／入れ子）
 
 実行方法：
     VSCode 右上の ▷（Run Python File）を押す。
     または、ターミナルで kakeibo フォルダに移動して次のコマンドを実行する。
-        python pre_study/step04_nested_if.py
+        python pre_study/step03_nested_if.py
     画面下の「ターミナル」に結果が表示される。
 
 一番下に「答え合わせ」があるので、全部 ○ になればクリア。
-本課題では「基本課題06」（shared/formatters.py）で使います。
 """
 
 # --- 例：まずはこのまま読んでみよう ---------------------------------
@@ -33,7 +32,7 @@ print(judge_lunch(3000, False))  # お弁当
 # ---------------------------------------------------------------------
 
 
-"""STEP04-1 START
+"""STEP03-1 START
 
 if文を修正しよう。
 補足：二重if文（ネスト/入れ子）を使う。
@@ -64,7 +63,7 @@ def format_task(label, *, done, urgent):
     else:
         mark = "済"
     return f"{mark} {label}"
-"""STEP04-1 END
+"""STEP03-1 END
 
 if文を修正しよう。
 """
@@ -84,6 +83,8 @@ def check(label, func, expected):
         actual = f"エラー {type(error).__name__}: {error}"
     if actual == expected:
         print(f"  ○ {label}")
+        print(f"      期待する結果: {expected!r}")
+        print(f"      実際の結果  : {actual!r}")
         return True
     print(f"  × {label}")
     print(f"      期待する結果: {expected!r}")
@@ -92,7 +93,7 @@ def check(label, func, expected):
 
 
 print()
-print("===== STEP04 答え合わせ =====")
+print("===== STEP03 答え合わせ =====")
 results = [
     check("未完了・急ぎ", lambda: format_task("買い物", done=False, urgent=True), "急 買い物"),
     check("未完了・急ぎでない", lambda: format_task("買い物", done=False, urgent=False), "□ 買い物"),
@@ -100,6 +101,6 @@ results = [
     check("完了・急ぎでない", lambda: format_task("掃除", done=True, urgent=False), "済 掃除"),
 ]
 if all(results):
-    print("STEP04 クリア！ 次は step05_convert_error.py に進もう。")
+    print("STEP03 クリア！")
 else:
     print("× のところを見直そう。")
