@@ -125,6 +125,7 @@ def refresh_totals(app: MainWindow) -> None:
         net_color ="black"
     app.total_label.configure(foreground=net_color)
     app.detail_var.set(f"（支出: {format_yen(expense)} / 収入: {format_yen(income)}）")
+"""基本課題03 END 合計がマイナスの時は赤字で表示 """
 
 def refresh_derived_display(app: MainWindow) -> None:
     """一覧・合計など、Repository から導かれる表示をまとめて再構築する
