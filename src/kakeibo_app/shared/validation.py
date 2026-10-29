@@ -142,6 +142,19 @@ def validate_category(category_text: str, transaction_type: TransactionType) -> 
         )
     return normalized
 
+""" 追加課題まで終わったとき用の課題の回答例
+    メモ欄の入力可能桁数100文字制限
+"""
+def validate_memo(text: str) -> int:
+    """メモを検証
+
+    ・入力可能桁数は100文字以下
+    """
+    # 100文字以上ならバリデーションエラー
+    if len(text) > 100:
+        raise ValidationError("メモは100文字以下で入力してください", code="length_error", field="memo")
+    return text
+""" 追加課題まで終わったとき用の課題の回答例 """
 
 def build_transaction(
     *,
@@ -164,7 +177,10 @@ def build_transaction(
         date=transaction_date,
         transaction_type=transaction_type,
         category=category,
+        # メモのバリデーションを追加するときはコメントアウトを切り替える
         memo=memo.strip(),
+        # memo=validate_memo(memo.strip()),
+
     )
 
 def build_transaction_from_row(row: Sequence[str]) -> Transaction:
