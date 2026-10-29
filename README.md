@@ -191,8 +191,6 @@ Remove-Item -Recurse -Force .venv
 インストール後は、以下のコマンドで起動します。
 
 ```powershell
-# kakeibo/srcに移動
-cd  ./work/kakeibo/src
 # 起動
 python -m kakeibo_app
 ```
