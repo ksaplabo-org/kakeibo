@@ -150,7 +150,7 @@ def validate_memo(text: str) -> int:
 
     ・入力可能桁数は100文字以下
     """
-    # 100文字以上ならバリデーションエラー
+    # 100文字より多いならバリデーションエラー
     if len(text) > 100:
         raise ValidationError("メモは100文字以下で入力してください", code="length_error", field="memo")
     return text

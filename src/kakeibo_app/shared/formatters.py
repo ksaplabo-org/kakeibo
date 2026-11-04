@@ -39,12 +39,12 @@ def format_sort_heading(label: str, *, active: bool, reverse: bool) -> str:
     Returns:
         「日付 ▲」のような見出し文字列
     """
-    if not active:
-        arrow = "▽"
-    else:
+    if active:
         if reverse:
             arrow = "▼" 
         else:
             arrow = "▲"
+    else:
+        arrow = "▽"
     return f"{label} {arrow}"
 """追加課題01 END ソートの表示制御関数の修正 """
