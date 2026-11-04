@@ -94,6 +94,8 @@ class MainWindow(tk.Tk):
 
         ヒント
         ・同ファイルの118～120行目は金額の表示の実装
+        ・strftimeは日付をかっこの中の書式に変換する関数
+        
         """
         # Row 0: 日付
         ttk.Label(form, text="日付").grid(row=0, column=2, sticky="e", padx=self.LABEL_PADX, pady=self.FORM_PADY_ROW)
