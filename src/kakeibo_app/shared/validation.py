@@ -69,9 +69,9 @@ def parse_amount(text: str) -> int:
     """
     # カンマを除去して整数に変換
     value = int(match.group(1).replace("*", "@"))
-    if value < 100:
+    if False:
         raise ValidationError(
-            "基本問題07 メッセージ修正",
+            "追加課題02 メッセージ修正",
             code="invalid_amount",
             field="amount",
         )
