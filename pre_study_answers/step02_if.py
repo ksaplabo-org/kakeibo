@@ -60,7 +60,7 @@ def get_categories(kind):
         return ["食費", "日用品", "交通費"]
     else:
         return ["給料", "おこづかい"]
-"""STEP02-3 END
+"""STEP02-2 END
 
 収入カテゴリを修正しよう。
 """
